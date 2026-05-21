@@ -182,7 +182,7 @@ Current status:
 
 Recommended before mainnet:
 
-- Run MythX, Slither, or another dedicated static analyzer with full CI output attached.
+- Run MythX, Slither.
 - Replace `MockOracle` with a production-grade oracle feed.
 - Do not deploy unrestricted `MockUSDT` as a production token.
 - Move owner/minter/admin roles to a multisig or timelock.

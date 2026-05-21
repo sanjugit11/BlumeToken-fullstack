@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { ethers } from "ethers";
-import deployedAddresses from "../../../deployed-addresses.json";
+import deployedAddresses from "../../../Deployment_Details.json"
 
 const Web3Context = createContext();
 
