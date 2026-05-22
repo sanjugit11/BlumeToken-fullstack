@@ -3,10 +3,6 @@
 .env.*
 !.env.example
 
-# Local agent/tooling state
-.codex/
-.agents/
-
 # Dependencies
 node_modules/
 **/node_modules/
