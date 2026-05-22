@@ -129,9 +129,13 @@ When you launch the client, you will see a sleek glassmorphic dashboard:
    ```bash
    npx hardhat node
    ```
-4. Deploy the contracts to the local testnet:
+4. Deploy the contracts to the sepolia:
    ```bash
-   npx hardhat run scripts/deploy.js --network localhost
+   npx hardhat run scripts/deploy.js --network sepolia
+   ```
+5. verify the contract
+   ```bash
+   npx hardhat run --network sepolia scripts/verify.js
    ```
 
 #### 2. Backend (Node.js Express API)

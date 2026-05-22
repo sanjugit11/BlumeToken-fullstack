@@ -156,7 +156,7 @@ async function main() {
     timestamp: new Date().toISOString()
   };
 
-  const outputPath = path.join(__dirname, "../../deployed-addresses.json");
+  const outputPath = path.join(__dirname, "../../Deployed-Details.json");
   fs.writeFileSync(outputPath, JSON.stringify(addresses, null, 2));
   console.log(`Addresses saved to ${outputPath}`);
 }

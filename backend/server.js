@@ -11,11 +11,9 @@ const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
-// ==========================================
 // Middleware Setup
-// ==========================================
 app.use(helmet()); // Basic security headers
 app.use(cors());   // Enable cross-origin resource sharing
 app.use(express.json()); // JSON body parser
@@ -30,16 +28,12 @@ const apiLimiter = rateLimit({
 });
 app.use("/api/", apiLimiter);
 
-// ==========================================
 // In-Memory Database (Transaction Logs & Simulation Data)
-// ==========================================
 const db = {
   transactions: []
 };
 
-// ==========================================
 // Web3 Smart Contract Integration Setup
-// ==========================================
 let provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
 let contractsLoaded = false;
 let addresses = getEnvAddresses();
@@ -139,9 +133,7 @@ function initContracts() {
 }
 initContracts();
 
-// ==========================================
 // API Endpoints
-// ==========================================
 
 /**
  * @api {get} /api/stats Get Global Ecosystem Statistics
@@ -386,9 +378,7 @@ app.get("/api/tx/history", (req, res) => {
   });
 });
 
-// ==========================================
 // Blockchain Interaction Endpoints
-// ==========================================
 function normalizePrivateKey(privateKey) {
   if (!privateKey) return "";
   const trimmed = privateKey.trim();
@@ -506,9 +496,7 @@ app.post("/api/vault/withdraw", body("amount").isNumeric(), async (req, res) => 
   }
 });
 
-// ==========================================
 // Error Handling Middleware
-// ==========================================
 app.use((err, req, res, next) => {
   console.error("Unhandled API Error:", err.stack);
   res.status(500).json({
@@ -519,8 +507,5 @@ app.use((err, req, res, next) => {
 
 // Start Server
 app.listen(PORT, () => {
-  console.log(`=========================================`);
   console.log(`Blume DeFi API server online on port ${PORT}`);
-  console.log(`Sandbox status: http://localhost:${PORT}/api/stats`);
-  console.log(`=========================================`);
 });
