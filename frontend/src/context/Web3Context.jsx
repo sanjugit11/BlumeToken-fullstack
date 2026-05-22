@@ -5,13 +5,13 @@ import deployedAddresses from "../../../Deployment_Details.json"
 const Web3Context = createContext();
 
 const CONFIGURED_ADDRESSES = {
-  BLXToken: import.meta.env.VITE_BLX_TOKEN_ADDRESS || deployedAddresses.BLXToken || "",
-  stBLXToken: import.meta.env.VITE_STBLX_TOKEN_ADDRESS || deployedAddresses.stBLXToken || "",
-  BlumeStaking: import.meta.env.VITE_STAKING_ADDRESS || deployedAddresses.BlumeStaking || "",
-  MockUSDT: import.meta.env.VITE_MOCK_USDT_ADDRESS || deployedAddresses.MockUSDT || "",
-  MockOracle: import.meta.env.VITE_MOCK_ORACLE_ADDRESS || deployedAddresses.MockOracle || "",
-  BlumeLP: import.meta.env.VITE_LP_ADDRESS || deployedAddresses.BlumeLP || "",
-  BlumeVault: import.meta.env.VITE_VAULT_ADDRESS || deployedAddresses.BlumeVault || ""
+  BLXToken:  deployedAddresses.BLXToken || "",
+  stBLXToken:  deployedAddresses.stBLXToken || "",
+  BlumeStaking:  deployedAddresses.BlumeStaking || "",
+  MockUSDT: deployedAddresses.MockUSDT || "",
+  MockOracle:  deployedAddresses.MockOracle || "",
+  BlumeLP: deployedAddresses.BlumeLP || "",
+  BlumeVault: deployedAddresses.BlumeVault || ""
 };
 
 const EMPTY_STATS = {
@@ -53,10 +53,18 @@ const EMPTY_BALANCES = {
 const LOCK_LABELS = ["Flexible", "30 Days Lock", "90 Days Lock", "180 Days Lock"];
 const LOCK_APYS = [5, 10, 18, 28];
 
-const normalizeAddresses = (nextAddresses = {}) => ({
-  ...CONFIGURED_ADDRESSES,
-  ...nextAddresses
-});
+const normalizeAddresses = (nextAddresses = {}) => {
+  // Start with configured (local) addresses and only override
+  // with values that are non-empty in nextAddresses.
+  const merged = { ...CONFIGURED_ADDRESSES };
+  Object.keys(nextAddresses || {}).forEach((k) => {
+    const v = nextAddresses[k];
+    if (v !== undefined && v !== null && String(v).trim() !== "") {
+      merged[k] = v;
+    }
+  });
+  return merged;
+};
 
 export const Web3Provider = ({ children }) => {
   const [walletConnected, setWalletConnected] = useState(false);
@@ -164,10 +172,11 @@ export const Web3Provider = ({ children }) => {
       ["BlumeStaking", addressMap.BlumeStaking],
       ["BlumeLP", addressMap.BlumeLP],
       ["BlumeVault", addressMap.BlumeVault]
-    ].filter(([, value]) => !value);
+    ].filter(([, value]) => !value || String(value).trim() === "");
 
     if (missing.length > 0) {
-      alert(`Missing contract address config: ${missing.map(([key]) => key).join(", ")}`);
+      console.warn("Missing contract addresses detected", addressMap, missing.map(([k]) => k));
+      alert(`Missing contract address config: ${missing.map(([key]) => key).join(", ")}.\nCheck Deployment_Details.json or backend /stats response.`);
       return null;
     }
 

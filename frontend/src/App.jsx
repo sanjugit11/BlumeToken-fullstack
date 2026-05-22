@@ -164,15 +164,16 @@ const DashboardApp = () => {
         {isSandbox && (
           <div className="sandbox-banner">
             <div>
-              <strong>Wallet Not Connected</strong> — Connect MetaMask on Sepolia to read balances and send live contract transactions.
+              <strong>Wallet Not Connected</strong>
+               {/* — Connect MetaMask on Sepolia to read balances and send live contract transactions. */}
             </div>
-            <button 
+            {/* <button 
               className="btn-primary" 
               onClick={connectWallet} 
               style={{ padding: "0.4rem 1rem", fontSize: "0.8rem", background: "rgba(255,255,255,0.1)", border: "1px solid var(--primary)" }}
             >
               Connect MetaMask
-            </button>
+            </button> */}
           </div>
         )}
 
